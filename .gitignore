@@ -1,0 +1,4 @@
+backend/log/*
+backend/tmp/*
+backend/db/test.sqlite3
+frontend/node_modules/
