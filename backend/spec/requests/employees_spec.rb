@@ -32,4 +32,32 @@ RSpec.describe "Employees API", type: :request do
     body = JSON.parse(response.body)
     expect(body["meta"]["total"]).to be >= 1
   end
+
+  it "updates an existing employee" do
+    post "/api/v1/employees", params: valid_payload
+    created = JSON.parse(response.body)
+
+    patch "/api/v1/employees/#{created["id"]}", params: {
+      employee: {
+        job_title: "Senior Software Engineer",
+        salary: 120000
+      }
+    }
+
+    expect(response).to have_http_status(:ok)
+    updated = JSON.parse(response.body)
+    expect(updated["job_title"]).to eq("Senior Software Engineer")
+    expect(updated["salary"].to_f).to eq(120000.0)
+  end
+
+  it "deletes an employee" do
+    post "/api/v1/employees", params: valid_payload
+    created = JSON.parse(response.body)
+
+    delete "/api/v1/employees/#{created["id"]}"
+    expect(response).to have_http_status(:no_content)
+
+    get "/api/v1/employees/#{created["id"]}"
+    expect(response).to have_http_status(:not_found)
+  end
 end
