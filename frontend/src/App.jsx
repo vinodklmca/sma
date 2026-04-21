@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { AppBar, Box, Button, Container, Toolbar, Typography } from "@mui/material";
 import EmployeesPage from "./pages/EmployeesPage";
