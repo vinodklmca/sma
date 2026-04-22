@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, CircularProgress, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { apiGet, apiRequest } from "../api/client";
 import EmployeeForm from "../components/EmployeeForm";
@@ -9,6 +9,7 @@ export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
   const loadEmployees = async () => {
     try {
@@ -28,8 +29,13 @@ export default function EmployeesPage() {
   }, []);
 
   const handleCreate = async (employee) => {
-    await apiRequest("/employees", "POST", { employee });
-    await loadEmployees();
+    try {
+      await apiRequest("/employees", "POST", { employee });
+      await loadEmployees();
+      setShowForm(false);
+    } catch (e) {
+      setError(e.message);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -46,9 +52,20 @@ export default function EmployeesPage() {
 
   return (
     <>
-      <Typography variant="h5" sx={{ mb: 2 }}>Employees</Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+        <Typography variant="h5">Employees</Typography>
+        {!showForm ? (
+          <Button variant="text" onClick={() => setShowForm(true)}>Add</Button>
+        ) : (
+          <Button variant="text" onClick={() => setShowForm(false)}>Close</Button>
+        )}
+      </Stack>
       {error && <Alert severity="error">{error}</Alert>}
-      <EmployeeForm onSubmit={handleCreate} />
+      {showForm && (
+        <Box sx={{ mb: 2 }}>
+          <EmployeeForm onSubmit={handleCreate} />
+        </Box>
+      )}
       <EmployeeTable employees={employees} onDelete={handleDelete} onUpdate={handleUpdate} />
     </>
   );
