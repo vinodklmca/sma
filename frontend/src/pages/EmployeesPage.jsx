@@ -37,6 +37,11 @@ export default function EmployeesPage() {
     await loadEmployees();
   };
 
+  const handleUpdate = async (id, employee) => {
+    await apiRequest(`/employees/${id}`, "PATCH", { employee });
+    await loadEmployees();
+  };
+
   if (loading) return <CircularProgress />;
 
   return (
@@ -44,7 +49,7 @@ export default function EmployeesPage() {
       <Typography variant="h5" sx={{ mb: 2 }}>Employees</Typography>
       {error && <Alert severity="error">{error}</Alert>}
       <EmployeeForm onSubmit={handleCreate} />
-      <EmployeeTable employees={employees} onDelete={handleDelete} />
+      <EmployeeTable employees={employees} onDelete={handleDelete} onUpdate={handleUpdate} />
     </>
   );
 }
