@@ -50,3 +50,23 @@ docker compose run --rm frontend npm test
 - `GET /api/v1/salary_insights/country/:country/top_job_titles`
 
 See docs in `docs/` for architecture, trade-offs, and performance notes.
+
+## Here are some UI screenshots of web application
+<img width="940" height="494" alt="image" src="https://github.com/user-attachments/assets/75a51c56-1c9d-4d5d-af6b-71946ab0f63d" />
+
+<img width="940" height="494" alt="image" src="https://github.com/user-attachments/assets/cee1baf1-b12c-4569-9fd8-659b27ff49c6" />
+
+<img width="940" height="494" alt="image" src="https://github.com/user-attachments/assets/775d7508-67ca-4dd6-913f-49de53926325" />
+
+<img width="940" height="494" alt="image" src="https://github.com/user-attachments/assets/10655588-c4fd-4b16-9709-3f1c23313992" />
+
+<img width="940" height="494" alt="image" src="https://github.com/user-attachments/assets/0e2f2307-950b-4e56-9217-81ae2c3134b2" />
+
+## Screenshots of container running locally
+<img width="940" height="497" alt="image" src="https://github.com/user-attachments/assets/a5c755df-2a49-492f-bc52-3276ed7050ec" />
+
+
+
+
+
+
