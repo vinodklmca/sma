@@ -1,12 +1,12 @@
 ---
 name: frontend tests
 discover: find src -type f \( -name '*.test.jsx' -o -name '*.test.js' -o -name '*.test.ts' -o -name '*.test.tsx' \)
-run: tr '\\' '/' | xargs npx vitest run --reporter=junit --outputFile="<< outputs.junit >>" --silent --bail 0
+run: npx vitest run --reporter=junit --outputFile="<< outputs.junit >>" --silent --bail 0 << test.atoms >>
 outputs:
   junit: test-results/junit.xml
 ---
 name: backend tests
 discover: find spec -type f -name '*_spec.rb'
-run: tr '\\' '/' | xargs bundle exec rspec --format progress --format RspecJunitFormatter --out "<< outputs.junit >>"
+run: bundle exec rspec --format progress --format RspecJunitFormatter --out "<< outputs.junit >>" << test.atoms >>
 outputs:
   junit: test-results/junit.xml
