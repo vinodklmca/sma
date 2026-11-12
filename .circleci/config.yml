@@ -1,0 +1,65 @@
+version: 2.1
+
+workflows:
+  build-and-test:
+    jobs:
+      - frontend
+      - backend
+
+jobs:
+  frontend:
+    docker:
+      - image: cimg/node:20.19
+    working_directory: ~/project/frontend
+    steps:
+      - checkout:
+          path: ~/project
+      - restore_cache:
+          keys:
+            - frontend-npm-v1-{{ checksum "package-lock.json" }}
+            - frontend-npm-v1-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: frontend-npm-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/project/frontend/node_modules
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Test
+          command: circleci testsuite run "frontend tests"
+      - store_test_results:
+          path: test-results
+
+  backend:
+    docker:
+      - image: cimg/ruby:3.3
+    working_directory: ~/project/backend
+    environment:
+      RAILS_ENV: test
+      SECRET_KEY_BASE: circleci-test-secret-key-base-not-for-production
+    steps:
+      - checkout:
+          path: ~/project
+      - restore_cache:
+          keys:
+            - backend-bundle-v1-{{ checksum "Gemfile.lock" }}
+            - backend-bundle-v1-
+      - run:
+          name: Install dependencies
+          command: bundle install --path vendor/bundle
+      - save_cache:
+          key: backend-bundle-v1-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/project/backend/vendor/bundle
+      - run:
+          name: Prepare test database
+          command: bundle exec rails db:prepare
+      - run:
+          name: Test
+          command: circleci testsuite run "backend tests"
+      - store_test_results:
+          path: test-results

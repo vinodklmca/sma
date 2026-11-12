@@ -1,4 +1,10 @@
 backend/log/*
 backend/tmp/*
 backend/db/test.sqlite3
+backend/vendor/bundle/
+backend/test-results/
 frontend/node_modules/
+frontend/test-results/
+frontend/dist/
+.circleci/impact-*.json
+.circleci/state*
